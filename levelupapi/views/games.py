@@ -3,7 +3,10 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from levelupapi.models import Game
+from levelupapi.models.game import Game
+from levelupapi.models.gamer import Gamer
+from levelupapi.models.gameType import GameType
+from django.core.exceptions import ValidationError
 
 
 class GameView(ViewSet):
@@ -45,24 +48,95 @@ class GameView(ViewSet):
         serializer = GameSerializer(games, many=True)
         return Response(serializer.data)
 
+    def update(self, request, pk):
+        """Handle PUT requests for a game
+        # game = Game.objects.get(pk=pk)
+        # game.title = request.data["title"]
+        # game.maker = request.data["maker"]
+        # game.number_of_players = request.data["number_of_players"]
+        # game.skill_level = request.data["skill_level"]
 
-# The serializer class determines how the Python data should
-# be serialized to be sent back to the client. Put the
-# following code at the bottom of the same module as above.
-# Make sure it is outside of the view class.
+        # game_type = GameType.objects.get(pk=request.data["game_type"])
+        # game.game_type = game_type
+        # game.save()
+
+        # return Response(None, status=status.HTTP_204_NO_CONTENT)
+
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+        game = Game.objects.get(pk=pk)
+        serializer = CreateGameSerializer(game, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
+    # The new serializer will be used to validate and save the
+    # new game in the create method. Here is what the updated
+    # create method will now look like:
+
+    def create(self, request):
+        """Handle POST operations
+        OLD CODE WITHOUT VALIDATION CHECK:
+        def create(self, request):
+
+        gamer = Gamer.objects.get(user=request.auth.user)
+        game_type = GameType.objects.get(pk=request.data["game_type"])
+
+        game = Game.objects.create(
+            title=request.data["title"],
+            maker=request.data["maker"],
+            number_of_players=request.data["number_of_players"],
+            skill_level=request.data["skill_level"],
+            gamer=gamer,
+            game_type=game_type
+        )
+        serializer = GameSerializer(game)
+        return Response(serializer.data)
+
+        Returns:
+            Response -- JSON serialized game instance
+        """
+        # Any foreign keys needed must be stored in a variable
+        # like this
+        gamer = Gamer.objects.get(user=request.auth.user)
+        serializer = CreateGameSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(gamer=gamer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class GameSerializer(serializers.ModelSerializer):
     """JSON serializer for game types
+    The serializer class determines how the Python data should
+    be serialized to be sent back to the client. Put the
+    following code at the bottom of the same module as above.
+    Make sure it is outside of the view class.
     """
     class Meta:
         model = Game
         fields = (
             'id',
+            'game_type',
+            'title',
+            'maker',
+            'gamer',
+            'number_of_players',
+            'skill_level'
+        )
+        depth = 2
+
+
+class CreateGameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Game
+        # uses an array because information is coming from
+        # front-end
+        fields = [
+            'id',
+            'game_type',
             'title',
             'maker',
             'number_of_players',
-            'skill_level',
-            'game_type'
-        )
-        depth = 1
+            'skill_level'
+        ]

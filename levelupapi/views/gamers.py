@@ -3,28 +3,28 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from levelupapi.models import GameType
+from levelupapi.models import Gamer
 
 
-class GameTypeView(ViewSet):
+class GamerView(ViewSet):
     """Level up game types view"""
 
     def retrieve(self, request, pk):
-        """The retrieve method will get a single object 
-        from the database based on the pk (primary key) in 
-        the url. We will use the ORM to get the data, then the 
-        serializer to convert the data to json. Add the 
-        following code to the retrievemethod, making sure 
+        """The retrieve method will get a single object
+        from the database based on the pk (primary key) in
+        the url. We will use the ORM to get the data, then the
+        serializer to convert the data to json. Add the
+        following code to the retrievemethod, making sure
         the code is tabbed correctly:
 
         Returns:
             Response -- JSON serialized game type
         """
         try:
-            game_type = GameType.objects.get(pk=pk)
-            serializer = GameTypeSerializer(game_type)
+            gamer = Gamer.objects.get(pk=pk)
+            serializer = GamerSerializer(gamer)
             return Response(serializer.data)
-        except GameType.DoesNotExist as ex:
+        except Gamer.DoesNotExist as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
     def list(self, request):
@@ -36,8 +36,8 @@ class GameTypeView(ViewSet):
         Returns:
             Response -- JSON serialized list of game types
         """
-        game_types = GameType.objects.all()
-        serializer = GameTypeSerializer(game_types, many=True)
+        gamers = Gamer.objects.all()
+        serializer = GamerSerializer(gamers, many=True)
         return Response(serializer.data)
 
     def update(self, request, pk):
@@ -46,9 +46,9 @@ class GameTypeView(ViewSet):
         Returns:
             Response -- 204
         """
-        game_type = GameType.objects.get(pk=pk)
-        game_type.label = request.data['label']
-        game_type.save()
+        gamer = Gamer.objects.get(pk=pk)
+        gamer.bio = request.data['bio']
+        gamer.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
@@ -58,8 +58,8 @@ class GameTypeView(ViewSet):
         Returns:
             Response -- 204
         """
-        game_type = GameType.objects.get(pk=pk)
-        game_type.delete()
+        gamer = Gamer.objects.get(pk=pk)
+        gamer.delete()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
@@ -69,10 +69,14 @@ class GameTypeView(ViewSet):
 # Make sure it is outside of the view class.
 
 
-class GameTypeSerializer(serializers.ModelSerializer):
+class GamerSerializer(serializers.ModelSerializer):
     """JSON serializer for game types
     """
     class Meta:
-        model = GameType
-        fields = ('id', 'label')
+        model = Gamer
+        fields = (
+            'id',
+            'user',
+            'bio'
+        )
         depth = 2

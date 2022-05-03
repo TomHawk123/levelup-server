@@ -3,22 +3,24 @@
     "model": "levelupapi.game",
     "pk": 1,
     "fields": {
+      "game_type": 2,
       "title": "Dungeons and Dragons",
       "maker": "Wizards of the Coast",
+      "gamer": 1,
       "number_of_players": 5,
-      "skill_level": 8,
-      "game_type": 1
+      "skill_level": 8
     }
   },
   {
     "model": "levelupapi.game",
     "pk": 2,
     "fields": {
+      "game_type": 1,
       "title": "Monopoly",
       "maker": "Hasbro",
+      "gamer": 1,
       "number_of_players": 4,
-      "skill_level": 3,
-      "game_type": 2
+      "skill_level": 3
     }
   }
 ]
