@@ -10,11 +10,11 @@ class GameTypeView(ViewSet):
     """Level up game types view"""
 
     def retrieve(self, request, pk):
-        """The retrieve method will get a single object 
-        from the database based on the pk (primary key) in 
-        the url. We will use the ORM to get the data, then the 
-        serializer to convert the data to json. Add the 
-        following code to the retrievemethod, making sure 
+        """The retrieve method will get a single object
+        from the database based on the pk (primary key) in
+        the url. We will use the ORM to get the data, then the
+        serializer to convert the data to json. Add the
+        following code to the retrievemethod, making sure
         the code is tabbed correctly:
 
         Returns:
@@ -28,9 +28,9 @@ class GameTypeView(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
     def list(self, request):
-        """The list method is responsible for getting 
-        the whole collection of objects from the database. 
-        The ORM method for this one is all. Here is the code 
+        """The list method is responsible for getting
+        the whole collection of objects from the database.
+        The ORM method for this one is all. Here is the code
         to add to the method:
 
         Returns:

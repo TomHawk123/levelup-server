@@ -1,12 +1,11 @@
 """View module for handling requests about game types"""
+from django.core.exceptions import ValidationError
 from django.http import HttpResponseServerError
-from rest_framework.viewsets import ViewSet
-from rest_framework.response import Response
-from rest_framework import serializers, status
 from levelupapi.models.game import Game
 from levelupapi.models.gamer import Gamer
-from levelupapi.models.gameType import GameType
-from django.core.exceptions import ValidationError
+from rest_framework import serializers, status
+from rest_framework.response import Response
+from rest_framework.viewsets import ViewSet
 
 
 class GameView(ViewSet):
@@ -71,10 +70,6 @@ class GameView(ViewSet):
         serializer.save()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
-    # The new serializer will be used to validate and save the
-    # new game in the create method. Here is what the updated
-    # create method will now look like:
-
     def create(self, request):
         """Handle POST operations
         OLD CODE WITHOUT VALIDATION CHECK:
@@ -104,6 +99,11 @@ class GameView(ViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save(gamer=gamer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def destroy(self, request, pk):
+        game = Game.objects.get(pk=pk)
+        game.delete()
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
 
 
 class GameSerializer(serializers.ModelSerializer):
