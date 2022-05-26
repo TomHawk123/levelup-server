@@ -38,7 +38,7 @@ class GameTypeView(ViewSet):
         """
         game_types = GameType.objects.all()
         serializer = GameTypeSerializer(game_types, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def update(self, request, pk):
         """Handle PUT requests to get all game types

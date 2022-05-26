@@ -14,7 +14,7 @@ class GamerView(ViewSet):
         from the database based on the pk (primary key) in
         the url. We will use the ORM to get the data, then the
         serializer to convert the data to json. Add the
-        following code to the retrievemethod, making sure
+        following code to the retrieve method, making sure
         the code is tabbed correctly:
 
         Returns:

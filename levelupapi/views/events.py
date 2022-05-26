@@ -3,7 +3,7 @@ from rest_framework import serializers, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
-from levelupapi.models import Event, Game, Gamer
+from levelupapi.models import Event, Game, Gamer 
 
 
 class EventView(ViewSet):
@@ -20,9 +20,13 @@ class EventView(ViewSet):
         Returns:
             Response -- JSON serialized game type
         """
-        event = Event.objects.get(pk=pk)
+        try:
+            event = Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
         serializer = EventSerializer(event)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def list(self, request):
         """The list method is responsible for getting
@@ -163,4 +167,4 @@ class EventSerializer(serializers.ModelSerializer):
             'attendees',
             'joined'
         )
-        depth = 1
+        # depth = 1
