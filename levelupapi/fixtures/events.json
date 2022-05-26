@@ -14,7 +14,7 @@
     "model": "levelupapi.event",
     "pk": 2,
     "fields": {
-      "game": 3,
+      "game": 2,
       "description": "Fun in the Sun",
       "date": "2022-05-04",
       "time": "17:00",

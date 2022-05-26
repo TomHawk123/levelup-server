@@ -132,11 +132,10 @@ class CreateGameSerializer(serializers.ModelSerializer):
         model = Game
         # uses an array because information is coming from
         # front-end
-        fields = [
-            'id',
+        fields = (
             'game_type',
             'title',
             'maker',
             'number_of_players',
             'skill_level'
-        ]
+        )
