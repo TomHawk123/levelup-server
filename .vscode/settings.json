@@ -8,12 +8,15 @@
   "cSpell.words": [
     "Admina",
     "authtoken",
+    "eventsbyuser",
     "gamesbyuser",
     "gametype",
     "gametypes",
     "levelupapi",
     "levelupreports",
     "Straytor",
+    "userevent",
+    "userevents",
     "usergame",
     "usergames"
   ],
