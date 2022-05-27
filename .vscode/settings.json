@@ -6,10 +6,15 @@
     "--django-settings-module=levelup.settings",
   ],
   "cSpell.words": [
+    "Admina",
     "authtoken",
+    "gamesbyuser",
     "gametype",
     "gametypes",
     "levelupapi",
-    "levelupreports"
+    "levelupreports",
+    "Straytor",
+    "usergame",
+    "usergames"
   ],
 }
