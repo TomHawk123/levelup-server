@@ -2,7 +2,6 @@
 from django.shortcuts import render
 from django.db import connection
 from django.views import View
-
 from levelupreports.views.helpers import dict_fetch_all
 
 
